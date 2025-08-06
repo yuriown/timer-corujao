@@ -19,6 +19,7 @@
     h1 {
       font-size: 2.5rem;
       margin-bottom: 30px;
+      text-align: center;
     }
 
     .countdown {
@@ -36,11 +37,23 @@
       font-size: 3rem;
       color: #ffffff;
     }
+
+    #corujao {
+      cursor: pointer;
+      text-decoration: underline;
+      color: #ffffff;
+      transition: color 0.3s;
+    }
+
+    #corujao:hover {
+      color: #f9a825;
+    }
   </style>
 </head>
 <body>
 
-  <h1>Contagem Regressiva Corujão</h1>
+  <h1>Contagem Regressiva <span id="corujao">Corujão</span></h1>
+
   <div class="countdown">
     <div class="time-box">
       <span id="days">0</span>
@@ -60,23 +73,25 @@
     </div>
   </div>
 
+  <!-- Áudio (coloque corujao.mp3 na mesma pasta do HTML) -->
+  <audio id="corujao-audio" src="corujao.mp3"></audio>
+
   <script>
+    // Temporizador
     const countdown = () => {
-      // Alvo: 16 de agosto às 20h (ano ajustado automaticamente)
-      const targetDate = new Date(new Date().getFullYear(), 7, 16, 20, 0, 0); // Mês 7 = agosto (0 indexado)
-
+      const targetDate = new Date(new Date().getFullYear(), 7, 16, 20, 0, 0); // 16/08 às 20h
       const now = new Date();
-      const difference = targetDate - now;
+      const diff = targetDate - now;
 
-      if (difference <= 0) {
+      if (diff <= 0) {
         document.querySelector(".countdown").innerHTML = "<h2>Chegou o momento!</h2>";
         return;
       }
 
-      const seconds = Math.floor((difference / 1000) % 60);
-      const minutes = Math.floor((difference / 1000 / 60) % 60);
-      const hours = Math.floor((difference / (1000 * 60 * 60)) % 24);
-      const days = Math.floor(difference / (1000 * 60 * 60 * 24));
+      const seconds = Math.floor((diff / 1000) % 60);
+      const minutes = Math.floor((diff / 1000 / 60) % 60);
+      const hours = Math.floor((diff / (1000 * 60 * 60)) % 24);
+      const days = Math.floor(diff / (1000 * 60 * 60 * 24));
 
       document.getElementById("days").textContent = days;
       document.getElementById("hours").textContent = hours;
@@ -86,6 +101,15 @@
 
     countdown();
     setInterval(countdown, 1000);
+
+    // Áudio ao clicar em "Corujão"
+    const corujaoBtn = document.getElementById("corujao");
+    const corujaoAudio = document.getElementById("corujao-audio");
+
+    corujaoBtn.addEventListener("click", () => {
+      corujaoAudio.currentTime = 0;
+      corujaoAudio.play();
+    });
   </script>
 
 </body>
